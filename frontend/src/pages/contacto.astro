@@ -1,0 +1,28 @@
+---
+// ARCHIVO: src/pages/contacto.astro
+import Layout from '../layout/layout.astro';
+import ContactForm from '../components/ContactForm';
+---
+
+<Layout title="Contacto | Paellas Raúl Bacete">
+    <section class="py-32 bg-[#FDFBF9] min-h-screen">
+        <div class="max-w-4xl mx-auto px-6">
+            
+            {/* ⚙️ LÓGICA: Esta primera parte es puro HTML/Tailwind. Astro lo procesará en el servidor 
+                y se lo enviará al cliente ya montado, lo que hace que cargue al instante y mejore el SEO. */}
+            <div class="text-center mb-16">
+                <span class="text-[#E67E22] font-black uppercase tracking-[0.4em] text-[10px] mb-4 block italic">Atención Personalizada</span>
+                <h1 class="font-serif text-6xl italic mt-4 text-[#1A1A1A]">Contacto</h1>
+                <div class="h-1 w-24 bg-[#E67E22] mx-auto mt-8"></div>
+                <p class="mt-10 text-gray-500 text-lg font-medium italic">
+                    ¿Tiene alguna duda o desea realizar una consulta especial? <br/> Raúl Bacete le atenderá personalmente.
+                </p>
+            </div>
+            
+            <div class="bg-white p-12 md:p-16 rounded-[3rem] shadow-sm border border-orange-100/20">
+                {/* ⚙️ LÓGICA: Aquí metemos la "Isla de React" interactiva. */}
+                <ContactForm client:load />
+            </div>
+        </div>
+    </section>
+</Layout>

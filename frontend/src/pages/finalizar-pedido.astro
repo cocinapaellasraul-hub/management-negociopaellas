@@ -1,0 +1,19 @@
+---
+// ARCHIVO: src/pages/finalizar-pedido.astro
+import Layout from '../layout/layout.astro';
+import CheckoutForm from '../components/CheckoutForm';
+---
+
+<Layout title="Finalizar Pedido | Paellas Raúl Bacete">
+    <section class="min-h-screen bg-[#FDFBF9] py-12 md:py-24 px-4 md:px-6">
+        <div class="max-w-6xl mx-auto bg-white rounded-[3rem] shadow-2xl overflow-hidden border border-gray-100">
+            
+            {/* Aquí llamamos al componente de React. 
+              El 'client:load' es vital para que React se active nada más cargar la página 
+              y pueda leer el localStorage.
+            */}
+            <CheckoutForm client:load />
+            
+        </div>
+    </section>
+</Layout>

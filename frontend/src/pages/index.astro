@@ -1,0 +1,135 @@
+---
+// ARCHIVO: src/pages/index.astro
+import Layout from '../layout/layout.astro';
+import ProcessSteps from '../components/ProcessSteps';
+
+// 🎓 NOTA PARA EL TFG: "Tener variables de configuración en la parte superior (Server-side) 
+// facilita el mantenimiento. Si el cliente (Raúl) cambia de móvil mañana, solo tengo que cambiar 
+// este número aquí en lugar de buscar por todo el HTML."
+// CONFIGURACIÓN DE CONTACTO
+const whatsappNumber = "34640728607"; // Tu número real sin espacios
+const phoneNumber = "+3464078607";   // Tu número para llamadas directas
+const message = "Hola Raúl, me gustaría reservar una paella.";
+// ⚙️ LÓGICA: encodeURIComponent transforma los espacios y comas del mensaje en un formato seguro para URLs (%20).
+const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+---
+
+<Layout title="Arrozeo | Paellas por encargo en Moixent">
+    
+    <style>
+        /* ⚙️ LÓGICA: El modificador :global() de Astro permite que estos estilos 
+           rompan el aislamiento del componente y afecten a todo el documento (el body). */
+        @import url('https://fonts.googleapis.com/css2?family=Rubik+Moonrocks&display=swap');
+        
+        :global(body) {
+            background-color: #f4f1ee;
+            margin: 0;
+        }
+        .bg-pastel { background-color: #f4f1ee; }
+        .bg-pastel-warm { background-color: #eee9e4; }
+        .fuente-logo { font-family: 'Rubik Moonrocks', cursive; }
+    </style>
+
+    {/* --- PANEL DE CONTACTO FLOTANTE (Móvil y PC) --- */}
+    <div class="fixed bottom-6 right-6 z-[100] flex flex-col gap-4">
+        
+        {/* BOTÓN DE LLAMADA DIRECTA */}
+        <a 
+            href={`tel:${phoneNumber}`}
+            class="bg-[#E67E22] text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform duration-300 flex items-center justify-center group relative"
+            aria-label="Llamar por teléfono"
+        >
+            <span class="absolute right-full mr-4 bg-white text-black text-[10px] font-black uppercase tracking-widest py-2 px-4 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                Llamar ahora
+            </span>
+            {/* SVG del teléfono */}
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"></path>
+            </svg>
+        </a>
+
+        {/* BOTÓN DE WHATSAPP */}
+        <a 
+            href={whatsappUrl}
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform duration-300 flex items-center justify-center group relative"
+            aria-label="Contactar por WhatsApp"
+        >
+            <span class="absolute right-full mr-4 bg-white text-black text-[10px] font-black uppercase tracking-widest py-2 px-4 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                Reservar por WhatsApp
+            </span>
+            {/* SVG de WhatsApp */}
+            <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.417-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.835c1.52.909 3.012 1.388 4.509 1.389 5.348 0 9.702-4.354 9.705-9.703.002-2.593-1.01-5.029-2.853-6.873-1.844-1.844-4.28-2.855-6.872-2.855-5.352 0-9.703 4.353-9.706 9.704-.001 1.706.442 3.313 1.282 4.671l-1.011 3.693 3.791-.994zm11.366-6.42c-.301-.15-1.779-.877-2.053-.976-.275-.099-.475-.15-.675.15-.199.3-.775.976-.949 1.176-.175.199-.349.225-.65.075-.301-.15-1.267-.467-2.414-1.491-.892-.796-1.493-1.78-1.668-2.079-.175-.3-.018-.463.131-.612.134-.134.301-.351.45-.525.15-.175.199-.3.3-.499.099-.199.05-.374-.025-.525-.075-.15-.675-1.626-.925-2.227-.243-.586-.49-.507-.675-.516-.174-.008-.374-.01-.574-.01s-.525.075-.799.374c-.275.3-1.049 1.026-1.049 2.501s1.074 2.901 1.224 3.101c.15.199 2.113 3.227 5.119 4.526.715.31 1.273.495 1.708.633.717.227 1.369.195 1.884.118.574-.085 1.779-.726 2.029-1.426.25-.699.25-1.299.175-1.426-.075-.127-.275-.201-.575-.351z"/>
+            </svg>
+        </a>
+    </div>
+
+    {/* --- HEADER --- */}
+    <header class="relative h-[90vh] md:h-[95vh] flex items-center justify-center overflow-hidden bg-[#111]">
+        
+        <img 
+            src="/images/albufera.jpg" 
+            alt="Arrozeo - La Albufera" 
+            class="absolute inset-0 w-full h-full object-cover opacity-70"
+        />
+        
+        <div class="relative z-20 text-center px-6 max-w-5xl w-full mt-12">
+            <h1 class="font-serif italic leading-tight tracking-tighter mb-12">
+                <span class="block text-white text-5xl md:text-8xl mb-4">Recetas que cuentan historias,</span>
+                <span class="block text-white/90 text-4xl md:text-7xl">paellas que saben a Moixent.</span>
+            </h1>
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <a href="/menu" class="bg-[#E67E22] text-white font-black py-5 px-12 rounded-full text-[11px] uppercase tracking-widest shadow-xl">
+                    Explorar la Carta
+                </a>
+            </div>
+        </div>
+    </header>
+
+    {/* --- RESTO DE SECCIONES IGUALES --- */}
+    <section class="py-24 bg-pastel">
+        <div class="max-w-7xl mx-auto px-6">
+            <ProcessSteps client:load />
+        </div>
+    </section>
+
+    <section class="py-24 bg-pastel-warm relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-24 items-center">
+                <div class="relative order-2 lg:order-1">
+                    <div class="relative z-10 overflow-hidden rounded-[3rem] shadow-2xl border-[15px] border-white">
+                        <img 
+                            src="/images/PaellaCostillasyAjo.jpg" 
+                            alt="Arroz de ajos tiernos y costillas" 
+                            class="w-full aspect-[4/5] object-cover" 
+                        />
+                    </div>
+                </div>
+                <div class="space-y-10 order-1 lg:order-2">
+                    <div class="flex items-center gap-3">
+                        <span class="text-[#E67E22] font-black uppercase tracking-[0.4em] text-[10px]">Sugerencia de Temporada</span>
+                    </div>
+                    <h2 class="font-serif italic text-5xl md:text-7xl text-[#111] leading-none">
+                        Arroz de Ajos Tiernos <br/> y Costillas
+                    </h2>
+                    <p class="text-xl text-gray-600 leading-relaxed font-serif italic">
+                        Una combinación clásica y reconfortante del interior valenciano. Cocinamos a fuego lento jugosas costillas de cerdo que se deshacen en la boca, realzadas por el sabor suave y único de los ajos tiernos frescos de nuestra huerta. Un arroz lleno de sabor y tradición Moixentina.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="py-24 bg-pastel">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h3 class="font-serif text-5xl md:text-7xl italic text-[#111] mb-12">El refugio del sabor.</h3>
+            {/* 🎓 NOTA PARA EL TFG: "La integración del mapa se hace mediante un Iframe nativo apuntando a las coordenadas del local." */}
+            <div class="h-[500px] w-full rounded-[4rem] overflow-hidden shadow-2xl border-[12px] border-white">
+                <iframe width="100%" height="100%" style="border:0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12345!2d-0.7!3d38.8!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzjCsDQ4JzAwLjAiTiAwwrA0MicwMC4wIlc!5e0!3m2!1ses!2ses!4v1234567890" class="grayscale-[0.4]"></iframe>
+            </div>
+        </div>
+    </section>
+
+</Layout>

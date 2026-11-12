@@ -1,0 +1,52 @@
+---
+// ARCHIVO: src/pages/politica-privacidad.astro
+import Layout from '../layout/layout.astro';
+
+// 🎓 NOTA PARA EL TFG: "La creación de esta página estática responde a los requerimientos 
+// de la LOPDGDD y el RGPD europeo. Se estructura de forma clara y accesible para informar 
+// al usuario sobre quién trata sus datos, para qué y cómo puede ejercer sus derechos."
+---
+
+<Layout title="Política de Privacidad | Paellas Raúl Bacete">
+    <section class="py-32 bg-[#FDFBF9] min-h-screen">
+        <div class="max-w-3xl mx-auto px-6 font-sans text-gray-700">
+            <h1 class="font-serif text-5xl italic text-[#1A1A1A] mb-10">Política de Privacidad</h1>
+            
+            <div class="space-y-8 text-sm leading-relaxed">
+                <div class="bg-orange-50 p-6 rounded-2xl border border-orange-100">
+                    <p class="font-bold text-[#E67E22] mb-2">Información Básica sobre Protección de Datos (RGPD)</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li><strong>Responsable:</strong> Raúl Bacete.</li>
+                        <li><strong>Finalidad:</strong> Gestión de pedidos, contacto y envío de notificaciones sobre el estado de su comida.</li>
+                        <li><strong>Legitimación:</strong> Consentimiento expreso del interesado.</li>
+                        <li><strong>Destinatarios:</strong> No se cederán datos a terceros, salvo obligación legal.</li>
+                        <li><strong>Derechos:</strong> Acceder, rectificar y suprimir los datos, así como otros derechos explicados a continuación.</li>
+                    </ul>
+                </div>
+
+                <h2 class="text-xl font-bold text-[#1A1A1A] mt-8">1. Identificación del responsable</h2>
+                <p>En cumplimiento de la Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD) y el Reglamento (UE) 2016/679 (RGPD), le informamos que los datos personales recogidos serán tratados por Raúl Bacete, con domicilio en Calle de los Sapadors 26, Moixent (Valencia).</p>
+
+                <h2 class="text-xl font-bold text-[#1A1A1A] mt-8">2. Finalidad del tratamiento</h2>
+                <p>Los datos que nos facilite a través de los formularios (nombre, teléfono, email y dirección) serán utilizados exclusivamente para:</p>
+                <ul class="list-disc pl-5 space-y-2 mt-2">
+                    <li>Procesar, preparar y entregar su pedido gastronómico.</li>
+                    <li>Enviarle correos electrónicos automatizados (tickets de compra y avisos de cocina).</li>
+                    <li>Contactarle vía telefónica en caso de incidencias con la entrega.</li>
+                </ul>
+
+                <h2 class="text-xl font-bold text-[#1A1A1A] mt-8">3. Conservación de los datos</h2>
+                <p>Los datos proporcionados se conservarán mientras se mantenga la relación comercial o durante los años necesarios para cumplir con las obligaciones legales y tributarias vigentes.</p>
+
+                <h2 class="text-xl font-bold text-[#1A1A1A] mt-8">4. Ejercicio de Derechos</h2>
+                <p>Usted tiene derecho a obtener confirmación sobre si estamos tratando sus datos personales. Puede ejercer sus derechos de acceso, rectificación, supresión y portabilidad mediante correo electrónico o contactando al +34 600 000 000.</p>
+            </div>
+            
+            <div class="mt-16 pt-8 border-t border-gray-200">
+                <a href="/" class="text-[#E67E22] font-bold uppercase tracking-widest text-[10px] hover:text-[#1A1A1A] transition-colors">
+                    ← Volver al inicio
+                </a>
+            </div>
+        </div>
+    </section>
+</Layout>

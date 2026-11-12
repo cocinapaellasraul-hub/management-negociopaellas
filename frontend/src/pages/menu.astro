@@ -1,0 +1,103 @@
+---
+// ARCHIVO: src/pages/menu.astro
+import Layout from '../layout/layout.astro';
+import MenuGrid from '../components/MenuGrid';
+
+// 🎓 NOTA PARA EL TFG: "Uso TypeScript para definir la estructura de datos (PlatoBackend). 
+// Al conectar dos tecnologías distintas (Astro y C#), es vital asegurar que ambas hablan el mismo idioma 
+// y no haya errores de capitalización en las columnas de la base de datos."
+interface PlatoBackend {
+    id?: number;
+    Id?: number;
+    nombre?: string;
+    Nombre?: string;
+    precioPersona?: number;
+    PrecioPersona?: number;
+    descripcion?: string;
+    Descripcion?: string;
+    imagenUrl?: string;
+    ImagenUrl?: string;
+    categoria?: string;
+    Categoria?: string;
+    activo?: boolean;
+    Activo?: boolean;
+}
+
+let arroces: any[] = [];
+let postres: any[] = [];
+let errorCarga = false;
+
+// 🎓 NOTA PARA EL TFG: "Server-Side Rendering (SSR). La petición a la base de datos de Neon 
+// se hace desde el propio servidor de Astro en el momento de la carga. Esto tiene dos ventajas enormes:
+// 1. El cliente recibe el HTML ya con los platos pintados (Mejor SEO).
+// 2. Protejo la URL de mi API, ya que no queda expuesta en el navegador del cliente."
+try {
+    const response = await fetch('http://localhost:5086/api/Carta');
+    if (response.ok) {
+        const datos: PlatoBackend[] = await response.json();
+        
+        // ⚙️ LÓGICA: "Normalización de datos". El backend a veces devuelve "Nombre" y otras "nombre".
+        // Para que React no se vuelva loco después, aquí lo unificamos todo a minúsculas y asignamos valores por defecto (como la imagen del plato vacío).
+        const cartaLimpia = datos.map((p: PlatoBackend) => ({
+            id: p.id || p.Id,
+            nombre: p.nombre || p.Nombre,
+            precioPersona: p.precioPersona || p.PrecioPersona,
+            descripcion: p.descripcion || p.Descripcion,
+            imagen: p.imagenUrl || p.ImagenUrl || "/images/placeholder-plato.jpg",
+            categoria: (p.categoria || p.Categoria || "principal").toLowerCase(),
+            activo: p.activo ?? p.Activo ?? true
+        })).filter(p => p.activo);
+
+        // AQUI ESTABA EL FALLO: Ahora filtramos por lo que guarda el Admin
+        arroces = cartaLimpia.filter(p => p.categoria === 'principal' || p.categoria === 'arroces'); 
+        postres = cartaLimpia.filter(p => p.categoria === 'postre' || p.categoria === 'postres');
+    } else {
+        errorCarga = true;
+    }
+} catch (e) {
+    console.error("Error en el fetch de la carta:", e);
+    errorCarga = true;
+}
+---
+
+<Layout title="La Carta | Raúl Bacete">
+    <main class="bg-[#F9F7F2] min-h-screen">
+        <header class="pt-48 pb-20 text-center">
+            <span class="text-[#E67E22] font-black uppercase tracking-[1em] text-[10px] mb-8 block opacity-80">Mogente · Valencia</span>
+            <h1 class="font-serif italic text-7xl md:text-9xl text-[#1A1A1A] leading-[0.8] tracking-tighter">La Carta</h1>
+        </header>
+
+        <div class="max-w-6xl mx-auto px-6 py-24">
+            {/* ⚙️ LÓGICA: Manejo de errores amigable. Si el servidor C# está apagado, en lugar de 
+                mostrar un pantallazo blanco roto, mostramos un mensaje elegante de "La cocina está preparándose". */}
+            {errorCarga ? (
+                <div class="text-center py-24 border-2 border-dashed border-gray-200 rounded-[3rem]">
+                    <p class="font-serif italic text-3xl text-gray-400">La cocina está preparándose.</p>
+                </div>
+            ) : (
+                <div class="space-y-40">
+                    {arroces.length > 0 && (
+                        <section>
+                            <div class="flex items-baseline gap-6 mb-16">
+                                <span class="font-serif italic text-3xl text-[#E67E22] opacity-50">01</span>
+                                <h2 class="font-serif italic text-5xl md:text-6xl text-[#1A1A1A]">Arroces</h2>
+                            </div>
+                            {/* Le pasamos el array ya limpio y procesado al componente de React */}
+                            <MenuGrid initialPaellas={arroces} client:load />
+                        </section>
+                    )}
+
+                    {postres.length > 0 && (
+                        <section>
+                            <div class="flex items-baseline gap-6 mb-16">
+                                <span class="font-serif italic text-3xl text-[#E67E22] opacity-50">02</span>
+                                <h2 class="font-serif italic text-5xl md:text-6xl text-[#1A1A1A]">Postres Caseros</h2>
+                            </div>
+                            <MenuGrid initialPaellas={postres} client:load />
+                        </section>
+                    )}
+                </div>
+            )}
+        </div>
+    </main>
+</Layout>

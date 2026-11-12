@@ -1,0 +1,14 @@
+---
+// ARCHIVO: src/pages/personalizar-pedido.astro
+import Layout from '../layout/layout.astro';
+import PersonalizarPedidoClient from '../components/CustomizationForm';
+---
+
+<Layout title="Personalizar Pedido | Paellas Raúl Bacete">
+    <section class="min-h-screen pt-32 pb-20 bg-[#FDFBF9]">
+        {/* ⚙️ LÓGICA: Esta página actúa únicamente como un "contenedor".
+            Delega el 100% de la lógica de negocio (sumas, restas, botones de raciones) 
+            al componente interactivo CustomizationForm de React. */}
+        <PersonalizarPedidoClient client:load />
+    </section>
+</Layout>

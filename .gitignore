@@ -1,0 +1,21 @@
+# Dependencias de Node (Frontend y raíz)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Archivos de compilación de .NET (Backend)
+backend/bin/
+backend/obj/
+*.user
+*.suo
+
+# Archivos de compilación de Astro/React (Frontend)
+frontend/dist/
+frontend/.astro/
+
+# Variables de entorno y secretos (¡Muy importante por seguridad!)
+.env
+.env.*
+*.local
+appsettings.Development.json
+appsettings.Production.json

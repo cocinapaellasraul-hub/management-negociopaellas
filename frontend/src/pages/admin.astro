@@ -1,0 +1,22 @@
+---
+// ARCHIVO: src/pages/admin.astro
+import Layout from '../layout/layout.astro';
+import AdminDashboard from '../components/AdminDashboard';
+---
+
+{/* 🎓 NOTA PARA EL TFG: "Astro utiliza un sistema de enrutamiento basado en archivos (File-based routing). 
+    Al crear un archivo llamado `admin.astro` dentro de la carpeta `pages`, automáticamente 
+    se genera la URL '/admin' en la web, sin necesidad de configurar un router externo." */}
+<Layout title="Panel de Administración | Raúl Bacete">
+    <section class="min-h-screen bg-[#F9F9F9] py-16">
+        <div class="container mx-auto">
+            
+            {/* 🎓 NOTA PARA EL TFG: "La directiva 'client:load' es la clave de la 'Arquitectura de Islas' de Astro. 
+                Le dice al navegador: 'Oye, este componente AdminDashboard tiene botones y estados dinámicos. 
+                Descarga el JavaScript de React e hidrátalo inmediatamente al cargar la página'." 
+                Sin client:load, esto sería solo un dibujo muerto en la pantalla. */}
+            <AdminDashboard client:load />
+            
+        </div>
+    </section>
+</Layout>

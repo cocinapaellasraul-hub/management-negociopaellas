@@ -1,0 +1,136 @@
+---
+// ARCHIVO: src/layout/layout.astro
+
+// 🎓 NOTA PARA EL TFG: "En Astro, el bloque entre los guiones '---' se ejecuta ÚNICAMENTE 
+// en el servidor durante la construcción de la página (Build Time). 
+// Esto significa que este código JavaScript no llega al navegador del cliente, haciéndolo 100% seguro."
+
+interface Props {
+    title: string;
+}
+const { title } = Astro.props;
+const { pathname } = Astro.url;
+
+// 🎓 NOTA PARA EL TFG: "Utilicé View Transitions API de Astro. Esto convierte 
+// una web tradicional multipágina en una experiencia tipo SPA (Single Page Application) fluida, 
+// animando el cambio entre páginas sin que haya pantallazos blancos."
+import { ClientRouter } from 'astro:transitions';
+
+// ⚙️ LÓGICA: Esta función comprueba si la URL actual coincide con el botón del menú
+// para pintar de naranja/azafrán el botón de la página en la que nos encontramos.
+const isActive = (path: string) => pathname === path || pathname === path + '/';
+
+// ⚙️ LÓGICA: Importación de fuentes tipográficas auto-hospedadas (instaladas vía NPM).
+// En lugar de llamar a Google Fonts (que ralentiza la carga web), las fuentes se empaquetan en el proyecto.
+import "@fontsource/playfair-display/700.css"; 
+import "@fontsource/source-sans-pro/400.css";
+import "@fontsource/source-sans-pro/700.css";
+import "@fontsource/source-sans-pro/900.css";
+---
+
+<!doctype html>
+<html lang="es" class="scroll-smooth">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>{title}</title>
+        <ClientRouter />
+        <style>
+            /* Importamos la fuente corporativa de Arrozeo para el Header y el Footer */
+            @import url('https://fonts.googleapis.com/css2?family=Rubik+Moonrocks&display=swap');
+            .fuente-logo { font-family: 'Rubik Moonrocks', cursive; }
+        </style>
+    </head>
+    
+
+    <body class="bg-[#FDFBF9] text-[#1A1A1A] font-['Source_Sans_Pro',sans-serif] antialiased flex flex-col min-h-screen">
+        
+        {/* BARRA DE NAVEGACIÓN (HEADER) */}
+        <nav class="fixed top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 h-20 flex items-center shadow-sm">
+            <div class="max-w-7xl mx-auto px-6 w-full flex justify-between items-center">
+                
+                {/* ⚙️ LÓGICA: transition:name="nav-logo" le dice a Astro: 
+                    "Cuando cambies de página, no borres este elemento, muévelo suavemente". */}
+                <div class="flex items-center gap-6 group" transition:name="nav-logo">
+                    <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-[#E7B52D] shadow-md bg-[#1A1A1A] flex items-center justify-center transition-all duration-500 group-hover:scale-105">
+                        <img 
+                            src="/images/imagenprofesional.png" 
+                            alt="Raúl Bacete"
+                            class="w-full h-full object-cover scale-80 transform transition-transform duration-500 group-hover:scale-100" 
+                        />
+                    </div>
+                    
+                    <div class="flex flex-col">
+                        <a href="/" class="text-[#E7B52D] fuente-logo text-3xl tracking-widest leading-none transition-transform hover:scale-105">
+                            ARROZEO
+                        </a>
+                        <span class="text-[#1A1A1A] text-[9px] uppercase tracking-[0.4em] font-black mt-1">
+                            Por Raúl Bacete
+                        </span>
+                    </div>
+                </div>
+                
+                {/* ⚙️ LÓGICA: Aquí usamos la función `isActive()` definida arriba. 
+                    Si estás en /menu, el enlace "La Carta" se pinta del amarillo azafrán (#E7B52D). */}
+                <div class="hidden md:flex items-center gap-12 font-bold text-[10px] uppercase tracking-[0.3em]">
+                    <a href="/" class={isActive('/') ? "text-[#E7B52D]" : "text-gray-400 hover:text-[#1A1A1A] transition"}>Inicio</a>
+                    <a href="/menu" class={isActive('/menu') ? "text-[#E7B52D]" : "text-gray-400 hover:text-[#1A1A1A] transition"}>La Carta</a>
+                    <a href="/contacto" class={isActive('/contacto') ? "text-[#E7B52D]" : "text-gray-400 hover:text-[#1A1A1A] transition"}>Contacto</a>
+                </div>
+            </div>
+        </nav>
+
+        {/* 🎓 NOTA PARA EL TFG: "El <slot /> es el corazón de Astro. Todo el contenido específico 
+            de una página (como el formulario de contacto o la cuadrícula de paellas) se inyecta 
+            en este hueco automáticamente, heredando así el Header y el Footer sin tener que repetirlos." */}
+        <main class="flex-grow pt-20">
+            <slot />
+        </main>
+
+        {/* PIE DE PÁGINA (FOOTER) */}
+        <footer class="bg-[#1A1A1A] text-white pt-24 pb-12">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid md:grid-cols-3 gap-20 pb-20 border-b border-white/10">
+                    <div>
+                        <h3 class="fuente-logo text-4xl mb-6 text-[#E7B52D] tracking-widest">ARROZEO</h3>
+                        <p class="text-gray-400 leading-relaxed font-sans text-sm tracking-wide">
+                            Precisión milimétrica, fuego controlado y respeto absoluto por el producto local de Moixent. La unión perfecta entre la receta tradicional y una experiencia gastronómica moderna a domicilio.
+                        </p>
+                    </div>
+                    <div class="space-y-6">
+                        <h4 class="text-[10px] uppercase tracking-[0.4em] font-black text-white/40">Ubicación</h4>
+                        <p class="text-gray-300 font-serif italic text-xl">Moixent, Valencia</p>
+                        {/* ⚙️ LÓGICA: Se ha eliminado la calle concreta para mantener solo la población, 
+                            dado que el enfoque principal es el delivery/take-away bajo pedido. */}
+                    </div>
+                    <div class="space-y-6">
+                        <h4 class="text-[10px] uppercase tracking-[0.4em] font-black text-white/40">Horarios y Reservas</h4>
+                        <p class="text-[#E7B52D] font-serif italic text-xl">+34 640 72 86 07</p>
+                        <div class="text-gray-500 text-sm space-y-3">
+                            <p>
+                                <span class="text-white font-bold block">Horario de trabajo y servicio:</span>
+                                Viernes a Domingo: 11:00 — 17:00
+                            </p>
+                            <p>
+                                <span class="text-white font-bold block">Plazo para realizar reservas:</span>
+                                Lunes a Jueves: Todo el día
+                            </p>
+                            <p class="text-gray-400 text-[13px]">
+                                <span class="text-[#E7B52D] font-bold block">⚠️ RESERVA ANTICIPADA OBLIGATORIA</span>
+                                Solo se aceptan pedidos de lunes a jueves para garantizar una correcta organización del producto.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-12 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <p class="text-white/20 text-[9px] uppercase tracking-[0.5em]">© 2026 ARROZEO BY RAÚL BACETE</p>
+                    <div class="flex gap-8 text-white/20 text-[9px] uppercase tracking-[0.3em]">
+                        <a href="#" class="hover:text-[#E7B52D] transition">Aviso Legal</a>
+                        <a href="#" class="hover:text-[#E7B52D] transition">Privacidad</a>
+                        <a href="#" class="hover:text-[#E7B52D] transition">Instagram</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>
